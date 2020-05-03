@@ -12,38 +12,7 @@ let buildConfig = {
     path: ""
 }
 
-let config = {
-    active: 'dev',
-    configuration: [{
-        name: 'dev',
-        ssh: {
-            host: '120.77.81.112',
-            port: 33,
-            username: 'root',
-            password: 'qwer!@34',
-        },
-        build: {
-            cmd: 'npm run build'
-        },
-        autoBuild: true,
-        autoCompress: true,
-        autoBak: true,
-        local: {
-            projectRootPath: 'H:/web/ecma-test',
-            buildOutDir: 'dist',
-        },
-        remote: {
-            // deleteBeforeDeploy: false,
-            bakPath: '~/bak',
-            releasePath: '/netty-socket/web',
-            // releaseDir: 'dist'
-        }
-    }]
-}
-
-async function run(baseUrl, baseConfig) {
-    config = baseConfig;
-    console.log(baseConfig)
+async function run(baseUrl, config) {
     let sshServer
     try {
         //变量初始化
