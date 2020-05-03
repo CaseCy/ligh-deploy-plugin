@@ -32,8 +32,8 @@
 		"configuration": {
 			"title": "Light-deploy",
 			"properties": {
-				"light-deploy.config":{
-					"type":"object",
+				"light-deploy.config": {
+					"type": "object",
 					"description": "请在config中编辑"
 				}
 			}

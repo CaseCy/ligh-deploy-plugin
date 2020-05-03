@@ -5,6 +5,7 @@ const configHandle = require('./util/confighandle')
 const buildFlow = require('./flow/build-flow')
 const compressFlow = require('./flow/compress-flow')
 const moment = require('moment');
+const LOG = require('./util/log')
 let ext = ".tar.gz"
 
 let buildConfig = {
@@ -43,12 +44,10 @@ let config = {
 
 async function run(baseUrl, baseConfig) {
     config = baseConfig;
-    console.log(baseConfig)
     let sshServer
     try {
         //变量初始化
         const activeConfig = configHandle.chooseConfig(config);
-        console.log("active:", activeConfig)
         const local = activeConfig.local
         const remote = activeConfig.remote;
         const build = activeConfig.build;
@@ -77,33 +76,33 @@ async function run(baseUrl, baseConfig) {
         await sshServer.connect();
         //文件上传
         const remoteAddr = path.basename(outPutPath);
-        console.log("开始上传文件，本地地址：", outPutPath, "远程地址：~/" + remoteAddr)
+        LOG.log("开始上传文件，本地地址：" + outPutPath + " 远程地址：~/" + remoteAddr)
         await sshServer.uploadFile(outPutPath, remoteAddr)
         //自动备份
         if (activeConfig.autoBak) {
-            console.log("开始自动备份,备份目录", remote.bakPath)
+            LOG.log("开始自动备份,备份目录" + remote.bakPath)
             await sshServer.exeCommand(`cp -r ${remoteAddr} ${reName(remote.bakPath,remoteAddr)}`).then(() => {
-                console.log("备份成功")
+                LOG.log("备份成功")
             })
         }
         //部署
         if (activeConfig.autoCompress) {
             //压缩文件
             await sshServer.exeCommand(`tar -zxf ${remoteAddr} -C ${remote.releasePath}`).then(() => {
-                console.log("部署成功")
+                LOG.log("部署成功")
             }).catch(e => {
-                console.log("部署时出错", e)
+                LOG.log("部署时出错" + e)
             })
         } else {
             //文件夹
             await sshServer.exeCommand(`cp -r ${remoteAddr} ${path.posix.join(remote.releasePath,remoteAddr)}`, ).then(() => {
-                console.log("部署成功")
+                LOG.log("部署成功")
             }).catch(e => {
-                console.log("部署时出错", e)
+                LOG.log("部署时出错" + e)
             })
         }
     } catch (e) {
-        console.log("构建时异常：", e);
+        LOG.log("构建时异常：" + e);
     } finally {
         sshServer.disConnect();
     }
@@ -111,7 +110,6 @@ async function run(baseUrl, baseConfig) {
 
 function reName(remotePath, fileName) {
     fileName = fileName + moment().format('YYYY_MM_DD_HH_mm_ss');
-    console.log(remotePath, fileName)
     return path.posix.join(remotePath, fileName);
 }
 

@@ -1,6 +1,6 @@
 const node_ssh = require('node-ssh')
 const fs = require('fs');
-
+const LOG = require('./log')
 class SshServer {
     constructor(sshConfig) {
         this.sshConfig = sshConfig;
@@ -14,7 +14,7 @@ class SshServer {
     }
 
     exeCommand(command, path = '~') {
-        console.log("执行命令：", command)
+        LOG.log("执行命令：" + command)
         return this.ssh.execCommand(command, {
             cwd: path
         });
