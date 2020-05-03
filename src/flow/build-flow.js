@@ -8,8 +8,7 @@ function excute(buildConfig) {
         stdout,
     }) => {
         if (err) {
-            LOG.error(err);
-            return;
+            throw err;
         }
         LOG.log("构建结果：" + stdout);
         LOG.log("构建结束")
