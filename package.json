@@ -1,15 +1,17 @@
 {
 	"name": "light-deploy",
 	"displayName": "light-deploy",
-	"description": "",
-	"version": "0.0.1",
+	"description": "一个轻量级的编译打包工具",
+	"version": "1.0.0",
 	"publisher": "CononYc",
 	"engines": {
 		"vscode": "^1.44.0"
 	},
 	"categories": [
-		"Other"
+		"Extension Packs"
 	],
+	"repository": {
+	},
 	"activationEvents": [
 		"onCommand:light-deploy.deploy"
 	],
@@ -18,7 +20,7 @@
 		"commands": [
 			{
 				"command": "light-deploy.deploy",
-				"title": "执行发布"
+				"title": "执行发布（light-deploy）"
 			}
 		],
 		"menus": {
@@ -32,8 +34,8 @@
 		"configuration": {
 			"title": "Light-deploy",
 			"properties": {
-				"light-deploy.config":{
-					"type":"object",
+				"light-deploy.config": {
+					"type": "object",
 					"description": "请在config中编辑"
 				}
 			}

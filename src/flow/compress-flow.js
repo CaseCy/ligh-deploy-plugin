@@ -1,11 +1,12 @@
 const compress = require('../util/compress')
+const LOG = require('../util/log')
 
 function excute(compressPath, outPutPath) {
-    console.log("开始执行文件压缩")
+    LOG.log("开始执行文件压缩")
     return compress.exe(compressPath, outPutPath).then(() => {
-        console.log("压缩成功,文件路径", outPutPath);
+        LOG.log("压缩成功,文件路径" + outPutPath);
     }).catch((e) => {
-        console.log("压缩失败", e)
+        LOG.log("压缩失败")
     });
 }
 
