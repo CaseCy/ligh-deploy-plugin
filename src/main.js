@@ -15,6 +15,7 @@ let buildConfig = {
 
 async function run(baseUrl, config) {
     let sshServer
+    LOG.channel.clear();
     try {
         //变量初始化
         const activeConfig = configHandle.chooseConfig(config);
@@ -60,21 +61,20 @@ async function run(baseUrl, config) {
             //压缩文件
             await sshServer.exeCommand(`tar -zxf ${remoteAddr} -C ${remote.releasePath}`).then(() => {
                 LOG.log("部署成功")
-            }).catch(e => {
-                LOG.log("部署时出错" + e)
             })
         } else {
             //文件夹
             await sshServer.exeCommand(`cp -r ${remoteAddr} ${path.posix.join(remote.releasePath,remoteAddr)}`, ).then(() => {
                 LOG.log("部署成功")
-            }).catch(e => {
-                LOG.log("部署时出错" + e)
             })
         }
     } catch (e) {
+        console.log("构建时异常：", e)
         LOG.log("构建时异常：" + e);
     } finally {
-        sshServer.disConnect();
+        if (sshServer) {
+            sshServer.disConnect();
+        }
     }
 }
 
