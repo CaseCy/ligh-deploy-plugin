@@ -1,15 +1,17 @@
 {
 	"name": "light-deploy",
 	"displayName": "light-deploy",
-	"description": "",
-	"version": "0.0.1",
+	"description": "一个轻量级的编译打包工具",
+	"version": "1.0.0",
 	"publisher": "CononYc",
 	"engines": {
 		"vscode": "^1.44.0"
 	},
 	"categories": [
-		"Other"
+		"Extension Packs"
 	],
+	"repository": {
+	},
 	"activationEvents": [
 		"onCommand:light-deploy.deploy"
 	],

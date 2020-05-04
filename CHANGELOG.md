@@ -1,9 +1,10 @@
-# Change Log
+# 更改日志
 
-All notable changes to the "light-deploy" extension will be documented in this file.
+所有的更改日志会被记录在此.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+## [1.0.0]
+第一版发布，支持功能
+- 自动构建
+- 自动压缩
+- 自动打包上传（linux）
+- 自动发布
