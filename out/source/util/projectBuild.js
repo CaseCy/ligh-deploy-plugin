@@ -1,13 +1,8 @@
-const {
-    exec
-} = require('child_process');
-
-function build({
-    cmd,
-    path
-}) {
+"use strict";
+const child_process_1 = require("child_process");
+function build({ cmd, path }) {
     return new Promise((resolve) => {
-        exec(cmd, {
+        child_process_1.exec(cmd, {
             cwd: path,
         }, (err, stdout, stderr) => {
             resolve({
@@ -16,9 +11,9 @@ function build({
                 stderr
             });
         });
-    })
+    });
 }
-
 module.exports = {
     build
-}
+};
+//# sourceMappingURL=projectBuild.js.map

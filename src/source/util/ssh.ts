@@ -1,10 +1,15 @@
-const node_ssh = require('node-ssh')
-const fs = require('fs');
-const LOG = require('./log')
+import SSH = require('node-ssh')
+import fs = require('fs');
+import Log = require('./log');
+
 class SshServer {
-    constructor(sshConfig) {
+    private sshConfig: SSH.ConfigGiven;
+    private ssh: SSH;
+    private connected: boolean;
+
+    constructor(sshConfig: SSH.ConfigGiven) {
         this.sshConfig = sshConfig;
-        this.ssh = new node_ssh()
+        this.ssh = new SSH()
         this.connected = false;
     }
 
@@ -13,23 +18,23 @@ class SshServer {
         this.connected = true;
     }
 
-    exeCommand(command, path = '~') {
-        LOG.log("执行命令：" + command)
+    exeCommand(command: string, path = '~') {
+        Log.log("执行命令：" + command)
         return this.ssh.execCommand(command, {
             cwd: path
         });
     }
 
-    disConnect() {
+    disConnect(): void {
         this.ssh.dispose();
         this.connected = false;
     }
 
-    isConnect() {
+    isConnect(): boolean {
         return this.connected;
     }
 
-    uploadFile(localPath, remotePath) {
+    uploadFile(localPath: string, remotePath: string) {
         const stat = fs.lstatSync(localPath);
         if (stat.isDirectory()) {
             return this.ssh.putDirectory(localPath, remotePath);
@@ -45,4 +50,4 @@ class SshServer {
     }
 }
 
-module.exports = SshServer;
+export =  SshServer;
