@@ -1,11 +1,8 @@
-const fs = require('fs');
-const archiver = require('archiver');
-const path = require('path')
-
+"use strict";
+const fs = require("fs");
+const archiver = require("archiver");
+const path = require("path");
 function exe(sourceDir, targetPath) {
-    if (!fs.existsSync(sourceDir)) {
-        throw new Error("不存在这个文件：" + sourceDir + " 请检查后重试")
-    }
     let output = fs.createWriteStream(targetPath);
     // let archive = archiver('zip', {
     //     zlib: {
@@ -22,7 +19,7 @@ function exe(sourceDir, targetPath) {
     archive.directory(sourceDir, path.basename(sourceDir));
     return archive.finalize();
 }
-
 module.exports = {
     exe
-}
+};
+//# sourceMappingURL=compress.js.map

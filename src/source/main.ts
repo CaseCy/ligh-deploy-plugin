@@ -1,11 +1,12 @@
-// const config = require('../config')
-const path = require('path')
-const SSH = require('./util/ssh')
-const configHandle = require('./util/confighandle')
-const buildFlow = require('./flow/build-flow')
-const compressFlow = require('./flow/compress-flow')
-const moment = require('moment');
-const LOG = require('./util/log')
+// import config = require('./config')
+import path = require('path')
+import SSH = require('./util/ssh')
+import configHandle = require('./util/confighandle')
+import buildFlow = require('./flow/build-flow')
+import compressFlow = require('./flow/compress-flow')
+import moment = require('moment');
+import { Configuration } from './types/Configuration'
+import Log = require('./util/log')
 let ext = ".tar.gz"
 
 let buildConfig = {
@@ -13,15 +14,12 @@ let buildConfig = {
     path: ""
 }
 
-async function run(baseUrl, config) {
-    let sshServer
-    LOG.channel.clear();
+export async function run(baseUrl: string, config: Configuration) {
+    let sshServer: SSH;
     try {
         //变量初始化
         const activeConfig = configHandle.chooseConfig(config);
-        const local = activeConfig.local
-        const remote = activeConfig.remote;
-        const build = activeConfig.build;
+        const { local, remote, build, ssh } = activeConfig
         local.projectRootPath ? "" : local.projectRootPath = baseUrl;
         //打包文件所在目录
         let outPutPath = path.join(local.projectRootPath, local.buildOutDir);
@@ -35,54 +33,48 @@ async function run(baseUrl, config) {
 
         //文件压缩
         if (activeConfig.autoCompress) {
-            const compressPath = path.join(buildConfig.path, activeConfig.local.buildOutDir);
+            const compressPath = path.join(buildConfig.path, local.buildOutDir);
             outPutPath = compressPath + ext;
             await compressFlow.excute(compressPath, outPutPath);
         }
 
         //连接服务器
         sshServer = new SSH({
-            ...activeConfig.ssh
+            ...ssh
         })
         await sshServer.connect();
         //文件上传
         const remoteAddr = path.basename(outPutPath);
-        LOG.log("开始上传文件，本地地址：" + outPutPath + " 远程地址：~/" + remoteAddr)
+        Log.log("开始上传文件，本地地址：" + outPutPath + " 远程地址：~/" + remoteAddr)
         await sshServer.uploadFile(outPutPath, remoteAddr)
         //自动备份
         if (activeConfig.autoBak) {
-            LOG.log("开始自动备份,备份目录" + remote.bakPath)
-            await sshServer.exeCommand(`cp -r ${remoteAddr} ${reName(remote.bakPath,remoteAddr)}`).then(() => {
-                LOG.log("备份成功")
+            Log.log("开始自动备份,备份目录" + remote.bakPath)
+            await sshServer.exeCommand(`cp -r ${remoteAddr} ${reName(remote.bakPath, remoteAddr)}`).then(() => {
+                Log.log("备份成功")
             })
         }
         //部署
         if (activeConfig.autoCompress) {
             //压缩文件
             await sshServer.exeCommand(`tar -zxf ${remoteAddr} -C ${remote.releasePath}`).then(() => {
-                LOG.log("部署成功")
+                Log.log("部署成功")
             })
         } else {
             //文件夹
-            await sshServer.exeCommand(`cp -r ${remoteAddr} ${path.posix.join(remote.releasePath,remoteAddr)}`, ).then(() => {
-                LOG.log("部署成功")
+            await sshServer.exeCommand(`cp -r ${remoteAddr} ${path.posix.join(remote.releasePath, remoteAddr)}`).then(() => {
+                Log.log("部署成功")
             })
         }
     } catch (e) {
         console.log("构建时异常：", e)
-        LOG.log("构建时异常：" + e);
+        Log.log("构建时异常：" + e);
     } finally {
-        if (sshServer) {
-            sshServer.disConnect();
-        }
+        sshServer.disConnect()
     }
 }
 
-function reName(remotePath, fileName) {
+function reName(remotePath: string, fileName: string) {
     fileName = fileName + moment().format('YYYY_MM_DD_HH_mm_ss');
     return path.posix.join(remotePath, fileName);
 }
-
-module.exports = {
-    run
-};
