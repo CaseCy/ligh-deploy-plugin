@@ -19,9 +19,8 @@ export class BuildExcutor implements Excutor {
         const { local, build } = context.activeConfig;
         buildConfig.path = local.projectRootPath;
         local.buildCmdExePath ? buildConfig.path = local.buildCmdExePath : "";
-        build ? Object.assign(buildConfig, build) : "";
+        build ? Object.assign(buildConfig, build) : context.activeConfig.build = buildConfig;
         Log.log("开始进行项目构建，构建路径：" + buildConfig.path + " 执行的命令：" + buildConfig.cmd)
-        build.path = buildConfig.path;
         const { err, stdout, } = await projectBuild.build(buildConfig);
         if (err) {
             throw err;

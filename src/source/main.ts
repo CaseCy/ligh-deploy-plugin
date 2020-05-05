@@ -2,7 +2,7 @@ import path = require('path')
 import SSH = require('./util/ssh')
 import configHandle = require('./util/confighandle')
 import { Context } from './chain/Context';
-import { Deploychain } from './chain/DeployChain';
+import { DeployChain } from './chain/DeployChain';
 import { BuildExcutor, CompressExcutor, FileUploadExcutor, PublishExcutor, SSHConnectExcutor, BakExcutor } from './chain/Excutor'
 import { Configuration } from './types';
 import Log = require('./util/log');
@@ -21,7 +21,7 @@ export async function run(baseUrl: string, config: Configuration) {
         })
         const context: Context = { activeConfig, config, sshServer, outPutPath, remoteAddr }
         //执行链
-        const deployChain = new Deploychain(context);
+        const deployChain = new DeployChain(context);
         autoBuild ? deployChain.addExcutor(new BuildExcutor()) : "";
         autoCompress ? deployChain.addExcutor(new CompressExcutor()) : "";
         deployChain.addExcutor(new SSHConnectExcutor());

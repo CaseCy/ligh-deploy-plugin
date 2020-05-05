@@ -1,6 +1,6 @@
 import { Context } from './Context';
 import { Excutor } from '../types';
-export class Deploychain {
+export class DeployChain {
     private excutors: Array<Excutor> = new Array();
     private context: Context;
 
