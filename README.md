@@ -1,9 +1,9 @@
-## light-deploy
+## Light-deploy
 一个轻量的持续集成插件
 
 ## 目前支持的功能
 - 自动构建
-- 自动压缩
+- 自动压缩（压缩方式tar.gz）
 - 自动上传服务器备份
 - 自动发布
 
@@ -22,7 +22,7 @@
          {
              //配置名称
             "name": "dev",
-            //服务器连接配置（使用node-ssh），详细配置可以参看
+            //服务器连接配置（使用node-ssh），可以使用公私钥，详细配置可以参看node-ssh的配置
             "ssh": {
                "host": "172.16.5.33",
                "port": 22,
@@ -42,7 +42,7 @@
             "autoCompress": true,
             //是否自动备份
             "autoBak": true,
-            //本地配置
+            // 本地配置
             "local": {
                 //构建输出的文件夹，相对于构建路径
                "buildOutDir": "dist",
@@ -61,7 +61,8 @@
    },
 ```
 关于配置的几项说明
-构建路径：构建开始的路径，右键点击`执行发布（light-deploy）`时的路径，也可以在build选项中加入配置projectRootPath，此配置优于右键选择配置
+- 构建路径：构建开始的路径，右键点击`执行发布（light-deploy）`时的路径，也可以在build选项中加入配置projectRootPath，此配置优于右键选择配置
+- 文件上传位置：目前默认是linux登录用户的个人文件夹，即`~`
 
 ## 即将实现
 - 支持配置日期格式化
@@ -70,4 +71,4 @@
 - 支持配置压缩方式
 
 ## license
-[MIT)](https://opensource.org/licenses/MIT)
+[MIT](https://opensource.org/licenses/MIT)
