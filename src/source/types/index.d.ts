@@ -1,4 +1,5 @@
 import SSH = require("node-ssh");
+import { Context } from './../chain/Context';
 
 interface Configuration {
     active: string;
@@ -33,4 +34,8 @@ interface RemoteConfig {
     bakPath: string;
     releasePath: string;
     // releaseDir: 'dist'
+}
+
+interface Excutor {
+    handle(context: Context): any;
 }

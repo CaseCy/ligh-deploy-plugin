@@ -1,4 +1,4 @@
-import { Configuration } from "../types/Configuration";
+import { Configuration } from "../types";
 
 function chooseConfig(config: Configuration) {
     if (!config.active) {

@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import { BuildConfig } from '../types/Configuration';
+import { BuildConfig } from '../types';
 
 function build({
     cmd,

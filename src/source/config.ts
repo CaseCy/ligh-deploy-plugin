@@ -1,4 +1,4 @@
-import { Configuration } from "./types/Configuration"
+import { Configuration } from "./types"
 
 const config: Configuration = {
     active: 'dev',
