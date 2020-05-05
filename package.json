@@ -2,7 +2,7 @@
 	"name": "light-deploy",
 	"displayName": "light-deploy",
 	"description": "一个轻量级的编译打包工具",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"publisher": "CononYc",
 	"engines": {
 		"vscode": "^1.44.0"
