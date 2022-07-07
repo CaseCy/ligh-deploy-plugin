@@ -65,7 +65,7 @@
 	},
 	"dependencies": {
 		"archiver": "^4.0.1",
-		"moment": "^2.25.1",
+		"moment": "^2.29.4",
 		"node-ssh": "^8.0.0"
 	}
 }
